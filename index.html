@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Rakétás Télapó</title>
 
 <style>
@@ -13,9 +13,8 @@ height:100%;
 overflow:hidden;
 background:black;
 font-family:Georgia;
+color:white;
 }
-
-/* háttér */
 
 .bg{
 position:fixed;
@@ -31,88 +30,105 @@ height:100%;
 object-fit:cover;
 }
 
-/* kezelőfelület */
-
 .ui{
 position:fixed;
 inset:0;
 z-index:5;
 }
 
-/* gombsor */
+/* gombok */
 
 .gombsor{
-
 position:absolute;
-left:25px;
+left:30px;
 top:50%;
 transform:translateY(-50%);
-
 display:flex;
 flex-direction:column;
 gap:18px;
-
-padding:15px 12px;
-border-radius:18px;
-
-background:rgba(10,20,30,0.25);
-
-box-shadow:
-inset 0 1px 0 rgba(255,255,255,0.1),
-0 10px 40px rgba(0,0,0,0.5);
-
 }
-
-/* gomb */
 
 .kepgomb{
-
 width:120px;
-text-align:center;
 cursor:pointer;
-
-padding:10px;
-
-border-radius:18px;
-
-background:linear-gradient(
-180deg,
-rgba(220,245,255,0.12),
-rgba(80,120,150,0.10)
-);
-
-border:1px solid rgba(160,220,255,0.25);
-
+text-align:center;
+padding:8px;
+border-radius:16px;
+background:rgba(30,40,60,0.35);
+backdrop-filter:blur(4px);
 transition:0.2s;
-
-}
-
-.kepgomb img{
-
-width:80px;
-display:block;
-margin:auto;
-
-filter:
-drop-shadow(0 0 8px rgba(150,230,255,0.9))
-drop-shadow(0 0 16px rgba(120,220,255,0.5));
-
 }
 
 .kepgomb:hover{
-transform:translateY(-3px);
+transform:scale(1.05);
+}
+
+.kepgomb img{
+width:70px;
 }
 
 .gombszoveg{
-
-margin-top:6px;
 font-size:13px;
-
+margin-top:4px;
 color:#d6f7ff;
+}
 
-text-shadow:
-0 0 6px rgba(160,230,255,1),
-0 0 12px rgba(120,220,255,0.6);
+/* videó ablak */
+
+.videoWrap{
+
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%) scale(.9);
+
+width:70vw;
+max-width:1100px;
+aspect-ratio:16/9;
+
+background:black;
+border-radius:14px;
+overflow:hidden;
+
+opacity:0;
+pointer-events:none;
+
+transition:0.3s;
+}
+
+.videoWrap.show{
+opacity:1;
+pointer-events:auto;
+transform:translate(-50%,-50%) scale(1);
+}
+
+.videoWrap iframe{
+width:100%;
+height:100%;
+border:none;
+}
+
+/* bezárás */
+
+.closeBtn{
+
+position:absolute;
+right:-12px;
+top:-12px;
+
+width:38px;
+height:38px;
+
+border-radius:50%;
+border:none;
+
+font-size:22px;
+cursor:pointer;
+
+background:white;
+color:black;
+
+z-index:20;
 
 }
 
@@ -124,55 +140,42 @@ text-shadow:
 <!-- háttér -->
 
 <div class="bg">
-
-<video id="bgvideo" autoplay muted loop playsinline>
-
+<video autoplay muted loop playsinline>
 <source src="raketa.mp4" type="video/mp4">
-
 </video>
-
 </div>
-
-<!-- gombok -->
 
 <div class="ui">
 
 <div class="gombsor">
 
-<div class="kepgomb" id="btn1">
-
+<div class="kepgomb" onclick="playVideo('https://player.cloudinary.com/embed/?cloud_name=dgcumjeuj&public_id=GYSZ_gxtu3x')">
 <img src="hopihegomb01.png">
-
-<div class="gombszoveg">
-Gyermek szívvel<br>
-lejátszás
+<div class="gombszoveg">Gyermek szívvel<br>lejátszás</div>
 </div>
 
-</div>
-
-
-<div class="kepgomb" id="btn2">
-
+<div class="kepgomb" onclick="playVideo('https://player.cloudinary.com/embed/?cloud_name=dgcumjeuj&public_id=TELAPO_iz7umu')">
 <img src="hopihegomb01.png">
-
-<div class="gombszoveg">
-A mi Télapónk<br>
-lejátszás
+<div class="gombszoveg">A mi Télapónk<br>lejátszás</div>
 </div>
 
-</div>
-
-
-<div class="kepgomb" id="btn3">
-
+<div class="kepgomb" onclick="playVideo('https://player.cloudinary.com/embed/?cloud_name=dgcumjeuj&public_id=EMLEK_umqnnr')">
 <img src="hopihegomb01.png">
-
-<div class="gombszoveg">
-Emlék<br>
-lejátszás
+<div class="gombszoveg">Emlék<br>lejátszás</div>
 </div>
 
 </div>
+
+<!-- videó popup -->
+
+<div class="videoWrap" id="videoWrap">
+
+<button class="closeBtn" onclick="closeVideo()">×</button>
+
+<iframe id="videoFrame"
+allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+allowfullscreen>
+</iframe>
 
 </div>
 
@@ -180,39 +183,20 @@ lejátszás
 
 <script>
 
-const bg = document.getElementById("bgvideo")
+const wrap=document.getElementById("videoWrap")
+const frame=document.getElementById("videoFrame")
 
-function startVideo(link){
+function playVideo(url){
 
-bg.pause()
-
-bg.src="vershatter.mp4"
-
-bg.play()
-
-setTimeout(function(){
-
-window.location.href=link
-
-},2000)
+frame.src=url
+wrap.classList.add("show")
 
 }
 
-document.getElementById("btn1").onclick=function(){
+function closeVideo(){
 
-startVideo("https://www.youtube.com/watch?v=P-VyaH8ma-U")
-
-}
-
-document.getElementById("btn2").onclick=function(){
-
-startVideo("https://www.youtube.com/watch?v=X_yYjijwW_8")
-
-}
-
-document.getElementById("btn3").onclick=function(){
-
-startVideo("https://www.youtube.com/watch?v=YIYCAlUlMQ8")
+frame.src=""
+wrap.classList.remove("show")
 
 }
 
