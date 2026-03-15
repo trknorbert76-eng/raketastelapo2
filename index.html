@@ -6,200 +6,391 @@
 <title>Rakétás Télapó</title>
 
 <style>
-
 html,body{
-margin:0;
-height:100%;
-overflow:hidden;
-background:black;
-font-family:Georgia;
-color:white;
+  margin:0;
+  height:100%;
+  overflow:hidden;
+  background:black;
+  font-family:Georgia, "Times New Roman", serif;
+  color:white;
 }
 
 .bg{
-position:fixed;
-inset:0;
-z-index:1;
+  position:fixed;
+  inset:0;
+  z-index:1;
 }
 
 .bg video{
-position:absolute;
-inset:0;
-width:100%;
-height:100%;
-object-fit:cover;
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
 .ui{
-position:fixed;
-inset:0;
-z-index:5;
+  position:fixed;
+  inset:0;
+  z-index:5;
 }
 
-/* gombok */
-
 .gombsor{
-position:absolute;
-left:30px;
-top:50%;
-transform:translateY(-50%);
-display:flex;
-flex-direction:column;
-gap:18px;
+  position:absolute;
+  left:28px;
+  top:50%;
+  transform:translateY(-50%);
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  align-items:center;
+  padding:14px 10px;
+  border-radius:18px;
+  background:rgba(8,18,28,0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 10px 35px rgba(0,0,0,0.35);
+  backdrop-filter:blur(2px);
 }
 
 .kepgomb{
-width:120px;
-cursor:pointer;
-text-align:center;
-padding:8px;
-border-radius:16px;
-background:rgba(30,40,60,0.35);
-backdrop-filter:blur(4px);
-transition:0.2s;
-}
-
-.kepgomb:hover{
-transform:scale(1.05);
+  width:118px;
+  text-align:center;
+  cursor:pointer;
+  user-select:none;
+  padding:8px 8px 10px;
+  border-radius:18px;
+  background:linear-gradient(180deg, rgba(220,245,255,0.10), rgba(90,140,170,0.08));
+  border:1px solid rgba(170,230,255,0.18);
+  box-shadow:
+    inset 0 2px 6px rgba(255,255,255,0.10),
+    inset 0 -8px 12px rgba(0,0,0,0.18),
+    0 6px 16px rgba(0,0,0,0.32);
+  transition:transform .16s ease, box-shadow .16s ease, background .16s ease;
 }
 
 .kepgomb img{
-width:70px;
+  width:78px;
+  display:block;
+  margin:0 auto;
+  filter:
+    drop-shadow(0 0 6px rgba(120,220,255,.60))
+    drop-shadow(0 0 14px rgba(120,220,255,.28));
+  transition:transform .16s ease, filter .16s ease;
+}
+
+.kepgomb:hover{
+  transform:translateY(-2px);
+  background:linear-gradient(180deg, rgba(235,250,255,0.14), rgba(90,140,170,0.12));
+}
+
+.kepgomb:hover img{
+  transform:scale(1.06);
+  filter:
+    drop-shadow(0 0 10px rgba(120,220,255,.85))
+    drop-shadow(0 0 18px rgba(120,220,255,.40));
 }
 
 .gombszoveg{
-font-size:13px;
-margin-top:4px;
-color:#d6f7ff;
+  margin-top:6px;
+  font-size:13px;
+  line-height:1.15;
+  color:#d6f7ff;
+  text-shadow:
+    0 0 5px rgba(160,230,255,.95),
+    0 0 10px rgba(120,220,255,.50);
 }
 
-/* videó ablak */
-
 .videoWrap{
-
-position:absolute;
-left:50%;
-top:50%;
-transform:translate(-50%,-50%) scale(.9);
-
-width:70vw;
-max-width:1100px;
-aspect-ratio:16/9;
-
-background:black;
-border-radius:14px;
-overflow:hidden;
-
-opacity:0;
-pointer-events:none;
-
-transition:0.3s;
+  position:absolute;
+  left:58%;
+  top:50%;
+  transform:translate(-50%, -50%) scale(0.92);
+  width:min(68vw, 1080px);
+  aspect-ratio:16 / 9;
+  max-height:84vh;
+  padding:12px;
+  background:rgba(8,8,8,.97);
+  border:1px solid rgba(180,180,180,.25);
+  border-radius:16px;
+  box-shadow:
+    0 22px 60px rgba(0,0,0,.72),
+    inset 0 1px 0 rgba(255,255,255,.05);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s ease, transform .25s ease;
 }
 
 .videoWrap.show{
-opacity:1;
-pointer-events:auto;
-transform:translate(-50%,-50%) scale(1);
+  opacity:1;
+  pointer-events:auto;
+  transform:translate(-50%, -50%) scale(1);
 }
 
-.videoWrap iframe{
-width:100%;
-height:100%;
-border:none;
+.videoInner{
+  position:relative;
+  width:100%;
+  height:100%;
+  border-radius:10px;
+  overflow:hidden;
+  background:#000;
 }
 
-/* bezárás */
+#poemVideo{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  background:#000;
+  display:block;
+}
 
 .closeBtn{
-
-position:absolute;
-right:-12px;
-top:-12px;
-
-width:38px;
-height:38px;
-
-border-radius:50%;
-border:none;
-
-font-size:22px;
-cursor:pointer;
-
-background:white;
-color:black;
-
-z-index:20;
-
+  position:absolute;
+  top:-14px;
+  right:-14px;
+  width:40px;
+  height:40px;
+  border:none;
+  border-radius:50%;
+  background:linear-gradient(180deg, #fafafa, #d7d7d7);
+  color:#111;
+  font-size:24px;
+  line-height:40px;
+  text-align:center;
+  cursor:pointer;
+  z-index:50;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.8),
+    0 5px 14px rgba(0,0,0,.45);
 }
 
+.videoEndCover{
+  position:absolute;
+  inset:0;
+  display:none;
+  z-index:40;
+  background:#000;
+}
+
+.videoEndCover.show{
+  display:block;
+}
+
+.videoEndCover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.videoEndButtons{
+  position:absolute;
+  left:50%;
+  bottom:22px;
+  transform:translateX(-50%);
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+.endBtn{
+  border:none;
+  border-radius:999px;
+  padding:10px 18px;
+  font-size:15px;
+  cursor:pointer;
+  background:rgba(255,255,255,0.92);
+  color:#111;
+  box-shadow:0 6px 16px rgba(0,0,0,0.35);
+}
+
+@media (max-width:900px){
+  .gombsor{
+    left:8px;
+    gap:10px;
+    padding:10px 6px;
+  }
+
+  .kepgomb{
+    width:88px;
+    padding:6px 6px 8px;
+  }
+
+  .kepgomb img{
+    width:58px;
+  }
+
+  .gombszoveg{
+    font-size:10px;
+  }
+
+  .videoWrap{
+    left:54%;
+    width:86vw;
+  }
+
+  .endBtn{
+    font-size:13px;
+    padding:8px 14px;
+  }
+}
 </style>
 </head>
-
 <body>
 
-<!-- háttér -->
-
 <div class="bg">
-<video autoplay muted loop playsinline>
-<source src="raketa.mp4" type="video/mp4">
-</video>
+  <video id="bgVideo" autoplay muted loop playsinline preload="auto">
+    <source id="bgSource" src="raketa.mp4" type="video/mp4">
+  </video>
 </div>
 
 <div class="ui">
+  <div class="gombsor">
+    <div class="kepgomb" id="btn1">
+      <img src="hopihegomb01.png" alt="Gyermek szívvel">
+      <div class="gombszoveg">Gyermek szívvel<br>lejátszás</div>
+    </div>
 
-<div class="gombsor">
+    <div class="kepgomb" id="btn2">
+      <img src="hopihegomb01.png" alt="A mi Télapónk">
+      <div class="gombszoveg">A mi Télapónk<br>lejátszás</div>
+    </div>
 
-<div class="kepgomb" onclick="playVideo('https://player.cloudinary.com/embed/?cloud_name=dgcumjeuj&public_id=GYSZ_gxtu3x')">
-<img src="hopihegomb01.png">
-<div class="gombszoveg">Gyermek szívvel<br>lejátszás</div>
+    <div class="kepgomb" id="btn3">
+      <img src="hopihegomb01.png" alt="Emlék">
+      <div class="gombszoveg">Emlék<br>lejátszás</div>
+    </div>
+  </div>
+
+  <div class="videoWrap" id="videoWrap">
+    <button class="closeBtn" id="closeBtn" aria-label="Bezárás">×</button>
+
+    <div class="videoInner">
+      <video id="poemVideo" controls playsinline preload="metadata">
+        <source id="poemSource" src="" type="video/mp4">
+        A böngésző nem tudja lejátszani a videót.
+      </video>
+
+      <div class="videoEndCover" id="videoEndCover">
+        <img src="videovege.png" alt="Videó vége">
+        <div class="videoEndButtons">
+          <button class="endBtn" id="replayBtn">Újraindítás</button>
+          <button class="endBtn" id="endCloseBtn">Bezárás</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="kepgomb" onclick="playVideo('https://player.cloudinary.com/embed/?cloud_name=dgcumjeuj&public_id=TELAPO_iz7umu')">
-<img src="hopihegomb01.png">
-<div class="gombszoveg">A mi Télapónk<br>lejátszás</div>
-</div>
-
-<div class="kepgomb" onclick="playVideo('https://player.cloudinary.com/embed/?cloud_name=dgcumjeuj&public_id=EMLEK_umqnnr')">
-<img src="hopihegomb01.png">
-<div class="gombszoveg">Emlék<br>lejátszás</div>
-</div>
-
-</div>
-
-<!-- videó popup -->
-
-<div class="videoWrap" id="videoWrap">
-
-<button class="closeBtn" onclick="closeVideo()">×</button>
-
-<iframe id="videoFrame"
-allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-allowfullscreen>
-</iframe>
-
-</div>
-
-</div>
+<audio id="startSound" preload="auto">
+  <source src="hanglepked.mp3" type="audio/mpeg">
+</audio>
 
 <script>
+const wrap = document.getElementById('videoWrap');
+const closeBtn = document.getElementById('closeBtn');
+const endCloseBtn = document.getElementById('endCloseBtn');
+const replayBtn = document.getElementById('replayBtn');
 
-const wrap=document.getElementById("videoWrap")
-const frame=document.getElementById("videoFrame")
+const bgVideo = document.getElementById('bgVideo');
+const bgSource = document.getElementById('bgSource');
 
-function playVideo(url){
+const poemVideo = document.getElementById('poemVideo');
+const poemSource = document.getElementById('poemSource');
 
-frame.src=url
-wrap.classList.add("show")
+const startSound = document.getElementById('startSound');
+const videoEndCover = document.getElementById('videoEndCover');
 
+const defaultBg = 'raketa.mp4';
+const activeBg = 'vershatter.mp4';
+
+let currentVideoUrl = '';
+
+const videos = {
+  btn1: 'https://res.cloudinary.com/dgcumjeuj/video/upload/GYSZ_gxtu3x.mp4',
+  btn2: 'https://res.cloudinary.com/dgcumjeuj/video/upload/TELAPO_iz7umu.mp4',
+  btn3: 'https://res.cloudinary.com/dgcumjeuj/video/upload/EMLEK_umqnnr.mp4'
+};
+
+function setBackground(fileName){
+  bgVideo.pause();
+  bgSource.src = fileName;
+  bgVideo.load();
+  bgVideo.play().catch(() => {});
+}
+
+function hideEndCover(){
+  videoEndCover.classList.remove('show');
+}
+
+function showEndCover(){
+  videoEndCover.classList.add('show');
+}
+
+function stopSound(){
+  startSound.pause();
+  startSound.currentTime = 0;
+}
+
+function openVideo(url){
+  currentVideoUrl = url;
+
+  hideEndCover();
+  stopSound();
+
+  setBackground(activeBg);
+  wrap.classList.add('show');
+
+  poemVideo.pause();
+  poemVideo.currentTime = 0;
+  poemSource.src = url;
+  poemVideo.load();
+
+  startSound.play().catch(() => {});
+
+  setTimeout(() => {
+    poemVideo.play().catch(() => {});
+  }, 250);
 }
 
 function closeVideo(){
+  poemVideo.pause();
+  poemVideo.currentTime = 0;
+  poemSource.src = '';
+  poemVideo.load();
 
-frame.src=""
-wrap.classList.remove("show")
-
+  hideEndCover();
+  stopSound();
+  wrap.classList.remove('show');
+  setBackground(defaultBg);
 }
 
+function replayVideo(){
+  hideEndCover();
+  poemVideo.pause();
+  poemVideo.currentTime = 0;
+  poemVideo.play().catch(() => {});
+}
+
+document.getElementById('btn1').addEventListener('click', () => openVideo(videos.btn1));
+document.getElementById('btn2').addEventListener('click', () => openVideo(videos.btn2));
+document.getElementById('btn3').addEventListener('click', () => openVideo(videos.btn3));
+
+closeBtn.addEventListener('click', closeVideo);
+endCloseBtn.addEventListener('click', closeVideo);
+replayBtn.addEventListener('click', replayVideo);
+
+poemVideo.addEventListener('ended', () => {
+  showEndCover();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeVideo();
+  }
+});
 </script>
 
 </body>
