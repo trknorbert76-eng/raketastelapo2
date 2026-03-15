@@ -3,493 +3,219 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Gyermek szívvel</title>
+<title>Rakétás Télapó</title>
 
 <style>
-html, body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: #000;
-  font-family: Georgia, "Times New Roman", serif;
+
+html,body{
+margin:0;
+height:100%;
+overflow:hidden;
+background:black;
+font-family:Georgia;
 }
 
 /* háttér */
-.bg {
-  position: fixed;
-  inset: 0;
-  background: #000;
-  z-index: 1;
+
+.bg{
+position:fixed;
+inset:0;
+z-index:1;
 }
 
-.bg video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at center, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.18) 55%, rgba(0,0,0,0.42) 100%);
-  pointer-events: none;
+.bg video{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+object-fit:cover;
 }
 
 /* kezelőfelület */
-.ui {
-  position: fixed;
-  inset: 0;
-  z-index: 5;
+
+.ui{
+position:fixed;
+inset:0;
+z-index:5;
 }
 
-/* bal oldali oszlop */
-.gombsor {
-  position: absolute;
-  left: 24px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  align-items: center;
-  padding: 14px 10px;
-  border-radius: 18px;
-  background: rgba(8, 18, 28, 0.22);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.08),
-    0 10px 35px rgba(0,0,0,0.35);
-  backdrop-filter: blur(2px);
+/* gombsor */
+
+.gombsor{
+
+position:absolute;
+left:25px;
+top:50%;
+transform:translateY(-50%);
+
+display:flex;
+flex-direction:column;
+gap:18px;
+
+padding:15px 12px;
+border-radius:18px;
+
+background:rgba(10,20,30,0.25);
+
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.1),
+0 10px 40px rgba(0,0,0,0.5);
+
 }
 
-/* gombtest */
-.kepgomb {
-  width: 118px;
-  text-align: center;
-  cursor: pointer;
-  user-select: none;
-  padding: 8px 8px 10px;
-  border-radius: 18px;
-  background:
-    linear-gradient(180deg, rgba(220,245,255,0.10), rgba(90,140,170,0.08));
-  border: 1px solid rgba(170,230,255,0.18);
-  box-shadow:
-    inset 0 2px 6px rgba(255,255,255,0.10),
-    inset 0 -8px 12px rgba(0,0,0,0.18),
-    0 6px 16px rgba(0,0,0,0.32);
-  transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
+/* gomb */
+
+.kepgomb{
+
+width:120px;
+text-align:center;
+cursor:pointer;
+
+padding:10px;
+
+border-radius:18px;
+
+background:linear-gradient(
+180deg,
+rgba(220,245,255,0.12),
+rgba(80,120,150,0.10)
+);
+
+border:1px solid rgba(160,220,255,0.25);
+
+transition:0.2s;
+
 }
 
-.kepgomb img {
-  width: 78px;
-  display: block;
-  margin: 0 auto;
-  filter:
-    drop-shadow(0 0 6px rgba(120,220,255,.60))
-    drop-shadow(0 0 14px rgba(120,220,255,.28));
-  transition: transform .16s ease, filter .16s ease;
+.kepgomb img{
+
+width:80px;
+display:block;
+margin:auto;
+
+filter:
+drop-shadow(0 0 8px rgba(150,230,255,0.9))
+drop-shadow(0 0 16px rgba(120,220,255,0.5));
+
 }
 
-.kepgomb:hover {
-  transform: translateY(-2px);
-  background:
-    linear-gradient(180deg, rgba(235,250,255,0.14), rgba(90,140,170,0.12));
-  box-shadow:
-    inset 0 2px 6px rgba(255,255,255,0.14),
-    inset 0 -8px 12px rgba(0,0,0,0.16),
-    0 10px 22px rgba(0,0,0,0.40);
+.kepgomb:hover{
+transform:translateY(-3px);
 }
 
-.kepgomb:hover img {
-  transform: scale(1.06);
-  filter:
-    drop-shadow(0 0 10px rgba(120,220,255,.85))
-    drop-shadow(0 0 18px rgba(120,220,255,.40));
+.gombszoveg{
+
+margin-top:6px;
+font-size:13px;
+
+color:#d6f7ff;
+
+text-shadow:
+0 0 6px rgba(160,230,255,1),
+0 0 12px rgba(120,220,255,0.6);
+
 }
 
-.kepgomb:active {
-  transform: translateY(1px) scale(0.98);
-  box-shadow:
-    inset 0 5px 10px rgba(0,0,0,0.22),
-    inset 0 -2px 4px rgba(255,255,255,0.06),
-    0 3px 8px rgba(0,0,0,0.28);
-}
-
-.kepgomb:active img {
-  transform: scale(0.96);
-}
-
-.gombszoveg {
-  margin-top: 6px;
-  font-size: 13px;
-  line-height: 1.15;
-  color: #d6f7ff;
-  text-shadow:
-    0 0 5px rgba(160,230,255,.95),
-    0 0 10px rgba(120,220,255,.50);
-}
-
-/* videó ablak */
-.videoWrap {
-  position: absolute;
-  left: 58%;
-  top: 50%;
-  transform: translate(-50%, -50%) scale(0.92);
-  width: min(68vw, 1080px);
-  aspect-ratio: 16 / 9;
-  max-height: 84vh;
-  padding: 12px;
-  background: rgba(8,8,8,.97);
-  border: 1px solid rgba(180,180,180,.25);
-  border-radius: 16px;
-  box-shadow:
-    0 22px 60px rgba(0,0,0,.72),
-    inset 0 1px 0 rgba(255,255,255,.05);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .25s ease, transform .25s ease;
-}
-
-.videoWrap.show {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-.videoInner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  overflow: hidden;
-  background: #000;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
-}
-
-#ytFrame {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
-  background: #000;
-}
-
-/* videóvégi takaró */
-.videoEndCover {
-  position: absolute;
-  inset: 0;
-  display: none;
-  z-index: 30;
-  background: #000;
-}
-
-.videoEndCover.show {
-  display: block;
-}
-
-.videoEndCover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.videoEndButtons {
-  position: absolute;
-  left: 50%;
-  bottom: 24px;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.endBtn {
-  border: none;
-  border-radius: 999px;
-  padding: 10px 18px;
-  font-size: 15px;
-  cursor: pointer;
-  background: rgba(255,255,255,0.92);
-  color: #111;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.35);
-  transition: transform .15s ease, background .15s ease;
-}
-
-.endBtn:hover {
-  transform: translateY(-1px);
-  background: #fff;
-}
-
-.endBtn:active {
-  transform: scale(0.97);
-}
-
-/* bezáró */
-.closeBtn {
-  position: absolute;
-  top: -14px;
-  right: -14px;
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: 50%;
-  background: linear-gradient(180deg, #fafafa, #d7d7d7);
-  color: #111;
-  font-size: 24px;
-  line-height: 40px;
-  text-align: center;
-  cursor: pointer;
-  z-index: 40;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.8),
-    0 5px 14px rgba(0,0,0,.45);
-  transition: transform .12s ease, background .12s ease;
-}
-
-.closeBtn:hover {
-  transform: scale(1.06);
-  background: linear-gradient(180deg, #ffffff, #e8e8e8);
-}
-
-.closeBtn:active {
-  transform: scale(0.96);
-}
-
-/* mobil */
-@media (max-width: 900px) {
-  .gombsor {
-    left: 8px;
-    gap: 10px;
-    padding: 10px 6px;
-  }
-
-  .kepgomb {
-    width: 88px;
-    padding: 6px 6px 8px;
-  }
-
-  .kepgomb img {
-    width: 58px;
-  }
-
-  .gombszoveg {
-    font-size: 10px;
-  }
-
-  .videoWrap {
-    left: 54%;
-    width: 86vw;
-  }
-
-  .videoEndButtons {
-    bottom: 14px;
-  }
-
-  .endBtn {
-    font-size: 13px;
-    padding: 8px 14px;
-  }
-}
 </style>
 </head>
+
 <body>
 
+<!-- háttér -->
+
 <div class="bg">
-  <video id="bgVideo" autoplay muted loop playsinline preload="auto">
-    <source id="bgSource" src="raketa.mp4" type="video/mp4">
-  </video>
+
+<video id="bgvideo" autoplay muted loop playsinline>
+
+<source src="raketa.mp4" type="video/mp4">
+
+</video>
+
 </div>
+
+<!-- gombok -->
 
 <div class="ui">
-  <div class="gombsor">
 
-    <div class="kepgomb" id="startBtn1">
-      <img src="hopihegomb01.png" alt="Gyermek szívvel">
-      <div class="gombszoveg">Gyermek szívvel<br>lejátszás</div>
-    </div>
+<div class="gombsor">
 
-    <div class="kepgomb" id="startBtn2">
-      <img src="hopihegomb01.png" alt="A mi Télapónk">
-      <div class="gombszoveg">A mi Télapónk<br>lejátszás</div>
-    </div>
+<div class="kepgomb" id="btn1">
 
-    <div class="kepgomb" id="startBtn3">
-      <img src="hopihegomb01.png" alt="Emlék">
-      <div class="gombszoveg">Emlék<br>lejátszás</div>
-    </div>
+<img src="hopihegomb01.png">
 
-  </div>
-
-  <div class="videoWrap" id="videoWrap">
-    <button class="closeBtn" id="closeBtn" aria-label="Bezárás">×</button>
-
-    <div class="videoInner">
-      <iframe
-        id="ytFrame"
-        src=""
-        title="YouTube video player"
-        frameborder="0"
-        allow="autoplay; encrypted-media; picture-in-picture; web-share"
-        allowfullscreen
-        referrerpolicy="strict-origin-when-cross-origin">
-      </iframe>
-
-      <div class="videoEndCover" id="videoEndCover">
-        <img src="videovege.png" alt="Videó vége">
-        <div class="videoEndButtons">
-          <button class="endBtn" id="replayBtn">Újraindítás</button>
-          <button class="endBtn" id="endCloseBtn">Bezárás</button>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="gombszoveg">
+Gyermek szívvel<br>
+lejátszás
 </div>
 
-<audio id="startSound" preload="auto">
-  <source src="hanglepked.mp3" type="audio/mpeg">
-</audio>
+</div>
+
+
+<div class="kepgomb" id="btn2">
+
+<img src="hopihegomb01.png">
+
+<div class="gombszoveg">
+A mi Télapónk<br>
+lejátszás
+</div>
+
+</div>
+
+
+<div class="kepgomb" id="btn3">
+
+<img src="hopihegomb01.png">
+
+<div class="gombszoveg">
+Emlék<br>
+lejátszás
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 <script>
-const wrap = document.getElementById('videoWrap');
-const closeBtn = document.getElementById('closeBtn');
-const endCloseBtn = document.getElementById('endCloseBtn');
-const replayBtn = document.getElementById('replayBtn');
 
-const bgVideo = document.getElementById('bgVideo');
-const bgSource = document.getElementById('bgSource');
+const bg = document.getElementById("bgvideo")
 
-const startSound = document.getElementById('startSound');
-const videoEndCover = document.getElementById('videoEndCover');
-const ytFrame = document.getElementById('ytFrame');
+function startVideo(link){
 
-const btn1 = document.getElementById('startBtn1');
-const btn2 = document.getElementById('startBtn2');
-const btn3 = document.getElementById('startBtn3');
+bg.pause()
 
-const defaultBg = 'raketa.mp4';
-const activeBg = 'vershatter.mp4';
+bg.src="vershatter.mp4"
 
-let startTimer = null;
-let endTimer = null;
-let currentVideoId = null;
+bg.play()
 
-/* itt állítsd be a videók hosszát másodpercben */
-const videos = {
-  btn1: {
-    id: 'P-VyaH8ma-U',
-    duration: 190
-  },
-  btn2: {
-    id: 'X_yYjijwW_8',
-    duration: 260
-  },
-  btn3: {
-    id: 'YIYCAlUlMQ8',
-    duration: 220
-  }
-};
+setTimeout(function(){
 
-function setBackground(fileName) {
-  bgVideo.pause();
-  bgSource.src = fileName;
-  bgVideo.load();
-  bgVideo.play().catch(() => {});
+window.location.href=link
+
+},2000)
+
 }
 
-function hideEndCover() {
-  videoEndCover.classList.remove('show');
+document.getElementById("btn1").onclick=function(){
+
+startVideo("https://www.youtube.com/watch?v=P-VyaH8ma-U")
+
 }
 
-function showEndCover() {
-  videoEndCover.classList.add('show');
+document.getElementById("btn2").onclick=function(){
+
+startVideo("https://www.youtube.com/watch?v=X_yYjijwW_8")
+
 }
 
-function clearTimers() {
-  clearTimeout(startTimer);
-  clearTimeout(endTimer);
-  startTimer = null;
-  endTimer = null;
+document.getElementById("btn3").onclick=function(){
+
+startVideo("https://www.youtube.com/watch?v=YIYCAlUlMQ8")
+
 }
 
-function stopAllPlayback() {
-  clearTimers();
-
-  startSound.pause();
-  startSound.currentTime = 0;
-
-  hideEndCover();
-
-  ytFrame.src = "";
-}
-
-function buildYoutubeUrl(videoId) {
-  return "https://www.youtube-nocookie.com/embed/" + videoId +
-    "?autoplay=1&rel=0&playsinline=1";
-}
-function openVideo(videoData) {
-  currentVideoId = videoData.id;
-  stopAllPlayback();
-
-  setBackground(activeBg);
-  wrap.classList.add('show');
-
-  startSound.play().catch(() => {});
-
-  startTimer = setTimeout(() => {
-    ytFrame.src = buildYoutubeUrl(videoData.id);
-
-    endTimer = setTimeout(() => {
-      showEndCover();
-    }, videoData.duration * 1000);
-  }, 3000);
-}
-
-function closeVideo() {
-  stopAllPlayback();
-  wrap.classList.remove('show');
-  setBackground(defaultBg);
-}
-
-function replayVideo() {
-  if (!currentVideoId) return;
-
-  hideEndCover();
-  clearTimers();
-
-  ytFrame.src = "";
-  startTimer = setTimeout(() => {
-    ytFrame.src = buildYoutubeUrl(currentVideoId);
-
-    const currentData = Object.values(videos).find(v => v.id === currentVideoId);
-    if (currentData) {
-      endTimer = setTimeout(() => {
-        showEndCover();
-      }, currentData.duration * 1000);
-    }
-  }, 250);
-}
-
-btn1.addEventListener('click', () => openVideo(videos.btn1));
-btn2.addEventListener('click', () => openVideo(videos.btn2));
-btn3.addEventListener('click', () => openVideo(videos.btn3));
-
-closeBtn.addEventListener('click', closeVideo);
-endCloseBtn.addEventListener('click', closeVideo);
-replayBtn.addEventListener('click', replayVideo);
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    closeVideo();
-  }
-});
 </script>
 
 </body>
