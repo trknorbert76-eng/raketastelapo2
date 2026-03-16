@@ -420,23 +420,19 @@ function replayVideo(){
 }
 
 document.getElementById('btn1').addEventListener('click', async () => {
-  alert('btn1');
   await count('raketa_gyermek_szivvel');
   openVideo(videos.btn1);
 });
 
 document.getElementById('btn2').addEventListener('click', async () => {
-  alert('btn2');
   await count('raketa_a_mi_telaponk');
   openVideo(videos.btn2);
 });
 
 document.getElementById('btn3').addEventListener('click', async () => {
-  alert('btn3');
   await count('raketa_emlek');
   openVideo(videos.btn3);
 });
-
 closeBtn.addEventListener('click', closeVideo);
 endCloseBtn.addEventListener('click', closeVideo);
 replayBtn.addEventListener('click', replayVideo);
