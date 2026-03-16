@@ -419,18 +419,21 @@ function replayVideo(){
   poemVideo.play().catch(() => {});
 }
 
-document.getElementById('btn1').addEventListener('click', () => {
-  count('raketa_gyermek_szivvel');
+document.getElementById('btn1').addEventListener('click', async () => {
+  alert('btn1');
+  await count('raketa_gyermek_szivvel');
   openVideo(videos.btn1);
 });
 
-document.getElementById('btn2').addEventListener('click', () => {
-  count('raketa_a_mi_telaponk');
+document.getElementById('btn2').addEventListener('click', async () => {
+  alert('btn2');
+  await count('raketa_a_mi_telaponk');
   openVideo(videos.btn2);
 });
 
-document.getElementById('btn3').addEventListener('click', () => {
-  count('raketa_emlek');
+document.getElementById('btn3').addEventListener('click', async () => {
+  alert('btn3');
+  await count('raketa_emlek');
   openVideo(videos.btn3);
 });
 
