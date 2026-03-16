@@ -235,6 +235,25 @@ html,body{
     font-size:13px;
     padding:8px 14px;
   }
+ .mobilCim{
+  display:none;
+}
+
+@media (max-width:900px){
+  .mobilCim{
+    display:block;
+    position:absolute;
+    left:10px;
+    top:40px;
+    width:120px;
+    font-size:13px;
+    line-height:1.2;
+    text-align:center;
+    color:#e8faff;
+    text-shadow:
+      0 0 6px rgba(160,230,255,.9),
+      0 0 12px rgba(120,220,255,.6);
+  } 
 }
 </style>
 </head>
@@ -247,6 +266,10 @@ html,body{
 </div>
 
 <div class="ui">
+  <div class="mobilCim">
+    Frankó Ferenc<br>
+    A Rakétás Télapó emlékére
+  </div>
   <div class="gombsor">
     <div class="kepgomb" id="btn1">
       <img src="hopihegomb01.png" alt="Gyermek szívvel">
