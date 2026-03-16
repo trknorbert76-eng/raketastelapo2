@@ -312,6 +312,27 @@ html,body{
 </audio>
 
 <script>
+const SUPABASE_URL = "https://hhysuxfwdjwlxtmlxnrv.supabase.co";
+const SUPABASE_KEY = "sb_publishable_4Btoi0wsypr48xQH31RMaQ_r1YrPpsv";
+
+async function count(eventName) {
+  try {
+    await fetch(SUPABASE_URL + "/rest/v1/stats", {
+      method: "POST",
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        event: eventName
+      })
+    });
+  } catch (err) {
+    console.log("Számláló hiba:", err);
+  }
+}
+
 const wrap = document.getElementById('videoWrap');
 const closeBtn = document.getElementById('closeBtn');
 const endCloseBtn = document.getElementById('endCloseBtn');
@@ -397,9 +418,20 @@ function replayVideo(){
   poemVideo.play().catch(() => {});
 }
 
-document.getElementById('btn1').addEventListener('click', () => openVideo(videos.btn1));
-document.getElementById('btn2').addEventListener('click', () => openVideo(videos.btn2));
-document.getElementById('btn3').addEventListener('click', () => openVideo(videos.btn3));
+document.getElementById('btn1').addEventListener('click', () => {
+  count('raketa_gyermek_szivvel');
+  openVideo(videos.btn1);
+});
+
+document.getElementById('btn2').addEventListener('click', () => {
+  count('raketa_a_mi_telaponk');
+  openVideo(videos.btn2);
+});
+
+document.getElementById('btn3').addEventListener('click', () => {
+  count('raketa_emlek');
+  openVideo(videos.btn3);
+});
 
 closeBtn.addEventListener('click', closeVideo);
 endCloseBtn.addEventListener('click', closeVideo);
