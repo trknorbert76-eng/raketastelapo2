@@ -315,7 +315,6 @@ html,body{
 const SUPABASE_URL = "https://hhysuxfwdjwlxtmlxnrv.supabase.co";
 const SUPABASE_KEY = "sb_publishable_4Btoi0wsypr48xQH31RMaQ_r1YrPpsv";
 
-
 async function count(eventName) {
   try {
     await fetch(SUPABASE_URL + "/rest/v1/stats", {
@@ -354,9 +353,9 @@ const activeBg = 'vershatter.mp4';
 let currentVideoUrl = '';
 
 const videos = {
-  btn1: 'https://res.cloudinary.com/dgcumjeuj/video/upload/GYSZ_gxtu3x.mp4',
-  btn2: 'https://res.cloudinary.com/dgcumjeuj/video/upload/TELAPO_iz7umu.mp4',
-  btn3: 'https://res.cloudinary.com/dgcumjeuj/video/upload/EMLEK_umqnnr.mp4'
+  btn1: 'https://player.mediadelivery.net/play/636539/11ad0392-24ca-47a3-a99b-0454e3f9af62',
+  btn2: 'https://player.mediadelivery.net/play/636539/8f78d6b7-81ff-42bf-86de-bc7e43c6485f',
+  btn3: 'https://player.mediadelivery.net/play/636539/4c01e7b2-0a4a-4890-8547-000fc26d3728'
 };
 
 function setBackground(fileName){
@@ -390,14 +389,40 @@ function openVideo(url){
 
   poemVideo.pause();
   poemVideo.currentTime = 0;
-  poemSource.src = url;
-  poemVideo.load();
+
+  if(url.includes("mediadelivery.net")){
+    poemVideo.style.display = "none";
+
+    let iframe = document.getElementById("iframePlayer");
+    if(!iframe){
+      iframe = document.createElement("iframe");
+      iframe.id = "iframePlayer";
+      iframe.style.position = "absolute";
+      iframe.style.inset = "0";
+      iframe.style.width = "100%";
+      iframe.style.height = "100%";
+      iframe.style.border = "none";
+      iframe.allow = "autoplay; fullscreen";
+      document.querySelector(".videoInner").appendChild(iframe);
+    }
+
+    iframe.src = url;
+  }else{
+    let iframe = document.getElementById("iframePlayer");
+    if(iframe){
+      iframe.remove();
+    }
+
+    poemVideo.style.display = "block";
+    poemSource.src = url;
+    poemVideo.load();
+
+    setTimeout(() => {
+      poemVideo.play().catch(() => {});
+    }, 250);
+  }
 
   startSound.play().catch(() => {});
-
-  setTimeout(() => {
-    poemVideo.play().catch(() => {});
-  }, 250);
 }
 
 function closeVideo(){
@@ -405,6 +430,12 @@ function closeVideo(){
   poemVideo.currentTime = 0;
   poemSource.src = '';
   poemVideo.load();
+  poemVideo.style.display = "block";
+
+  let iframe = document.getElementById("iframePlayer");
+  if(iframe){
+    iframe.remove();
+  }
 
   hideEndCover();
   stopSound();
@@ -414,6 +445,13 @@ function closeVideo(){
 
 function replayVideo(){
   hideEndCover();
+
+  let iframe = document.getElementById("iframePlayer");
+  if(iframe && currentVideoUrl.includes("mediadelivery.net")){
+    iframe.src = currentVideoUrl;
+    return;
+  }
+
   poemVideo.pause();
   poemVideo.currentTime = 0;
   poemVideo.play().catch(() => {});
@@ -433,6 +471,7 @@ document.getElementById('btn3').addEventListener('click', async () => {
   await count('raketa_emlek');
   openVideo(videos.btn3);
 });
+
 closeBtn.addEventListener('click', closeVideo);
 endCloseBtn.addEventListener('click', closeVideo);
 replayBtn.addEventListener('click', replayVideo);
@@ -447,6 +486,5 @@ document.addEventListener('keydown', (e) => {
   }
 });
 </script>
-
 </body>
 </html>
